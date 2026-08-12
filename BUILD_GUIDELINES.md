@@ -129,6 +129,13 @@ Work through this before writing implementation code:
   volume goes through the contact form.
 - Call transcript retention policy — not yet defined; must be decided before Phase 3
   transcripts start being stored.
+- `infra/` (AWS CDK project) carries an accepted high-severity `brace-expansion` CVE
+  (GHSA-rgw5-rvv9-x895) bundled inside `aws-cdk-lib`'s vendored `minimatch` dependency —
+  npm `overrides` cannot reach it since it's a bundled (sealed) dependency, and we are
+  already on the latest `aws-cdk-lib` release. Accepted as low-risk because it only
+  affects glob-pattern matching during local `cdk synth`/`cdk deploy` — build-time only,
+  never reachable at runtime in a deployed Lambda. Re-check on every `aws-cdk-lib` bump;
+  drop this note once AWS ships a patched version.
 - *(Add new deferred items here as they come up — do not let them go unrecorded.)*
 
 ---
