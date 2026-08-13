@@ -58,6 +58,23 @@ body {
   animation-delay: 0.15s;
 }
 
+@keyframes block-pulse {
+  0%,
+  100% {
+    opacity: var(--pulse-opacity, 0.4);
+  }
+  50% {
+    opacity: calc(var(--pulse-opacity, 0.4) * 0.35);
+  }
+}
+
+.animate-block-pulse {
+  opacity: var(--pulse-opacity, 0.4);
+  animation-name: block-pulse;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -11,9 +11,19 @@ function buildBlocks(count: number, seedOffset: number) {
     const seed = i + seedOffset;
     const col = Math.floor(seededRandom(seed * 1.7) * 10);
     const row = Math.floor(seededRandom(seed * 3.1) * 10);
-    const opacity = 0.15 + seededRandom(seed * 5.3) * 0.55;
+    const baseOpacity = 0.15 + seededRandom(seed * 5.3) * 0.55;
     const color = COLORS[Math.floor(seededRandom(seed * 7.9) * COLORS.length)];
-    return { col, row, opacity, color, key: `${seedOffset}-${i}` };
+    const duration = 2.5 + seededRandom(seed * 11.3) * 3.5;
+    const delay = seededRandom(seed * 13.7) * -6;
+    return {
+      col,
+      row,
+      baseOpacity,
+      color,
+      duration,
+      delay,
+      key: `${seedOffset}-${i}`,
+    };
   });
 }
 
@@ -31,13 +41,17 @@ function BlockGrid({
       {blocks.map((block) => (
         <span
           key={block.key}
-          style={{
-            gridColumn: block.col + 1,
-            gridRow: block.row + 1,
-            backgroundColor: block.color,
-            opacity: block.opacity,
-          }}
-          className="h-2 w-2 rounded-[1px] sm:h-2.5 sm:w-2.5"
+          style={
+            {
+              gridColumn: block.col + 1,
+              gridRow: block.row + 1,
+              backgroundColor: block.color,
+              "--pulse-opacity": block.baseOpacity,
+              animationDuration: `${block.duration}s`,
+              animationDelay: `${block.delay}s`,
+            } as React.CSSProperties
+          }
+          className="animate-block-pulse h-2 w-2 rounded-[1px] sm:h-2.5 sm:w-2.5"
         />
       ))}
     </div>
