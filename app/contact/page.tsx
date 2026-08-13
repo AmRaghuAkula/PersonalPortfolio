@@ -2,17 +2,40 @@
 
 import { useState, type FormEvent } from "react";
 
-export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "submitted">(
-    "idle",
-  );
+const CONTACT_API_URL = process.env.NEXT_PUBLIC_CONTACT_API_URL;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+export default function ContactPage() {
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "submitted" | "error"
+  >("idle");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("submitting");
-    // TODO: wire to API Gateway -> Lambda (lead-intake) -> DynamoDB.
-    // Backend not yet provisioned — see BUILD_GUIDELINES.md before adding it.
-    setTimeout(() => setStatus("submitted"), 400);
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      if (!CONTACT_API_URL) {
+        throw new Error("Contact API URL is not configured");
+      }
+      const res = await fetch(`${CONTACT_API_URL}contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          message: data.get("message"),
+        }),
+      });
+      if (!res.ok) {
+        throw new Error(`Request failed with status ${res.status}`);
+      }
+      setStatus("submitted");
+    } catch {
+      setStatus("error");
+    }
   }
 
   if (status === "submitted") {
@@ -20,8 +43,7 @@ export default function ContactPage() {
       <div className="mx-auto flex max-w-3xl flex-1 flex-col gap-4 px-6 py-16">
         <h1 className="text-2xl font-semibold tracking-tight">Thanks!</h1>
         <p className="text-zinc-600 dark:text-zinc-400">
-          Your message was received. (Placeholder confirmation — no data is
-          persisted yet.)
+          Your message was received. I&apos;ll get back to you soon.
         </p>
       </div>
     );
@@ -68,6 +90,11 @@ export default function ContactPage() {
         >
           {status === "submitting" ? "Sending…" : "Send"}
         </button>
+        {status === "error" && (
+          <p className="text-sm text-red-600 dark:text-red-400">
+            Something went wrong sending your message. Please try again.
+          </p>
+        )}
       </form>
     </div>
   );
