@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --color-base: #14161a;
-  --color-panel: #1e2126;
+  --color-base: #101114;
+  --color-panel: #1a1c21;
   --color-panel-border: #2a2e35;
   --color-text: #f2f3f5;
   --color-text-muted: #9aa0a6;
   --color-accent: #6c5ce7;
   --color-accent-soft: #6c5ce71a;
+  --color-accent-secondary: #3ddc97;
 }
 
 @theme inline {
@@ -18,7 +19,8 @@
   --color-text-muted: var(--color-text-muted);
   --color-accent: var(--color-accent);
   --color-accent-soft: var(--color-accent-soft);
-  --font-display: var(--font-geist-sans);
+  --color-accent-secondary: var(--color-accent-secondary);
+  --font-display: var(--font-jetbrains-mono);
   --font-body: var(--font-inter);
 }
 
@@ -27,21 +29,10 @@ body {
   color: var(--color-text);
 }
 
-@keyframes ghost-in {
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: scale(1.04);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes card-settle {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -49,13 +40,22 @@ body {
   }
 }
 
-.animate-ghost-in {
-  animation: ghost-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+@keyframes texture-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.animate-card-settle {
-  animation: card-settle 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.5s;
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-texture-in {
+  animation: texture-in 1.6s ease-out both;
+  animation-delay: 0.15s;
 }
 
 @media (prefers-reduced-motion: reduce) {

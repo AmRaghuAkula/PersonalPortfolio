@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Inter } from "next/font/google";
+import { JetBrains_Mono, Inter } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${inter.variable} h-full`}
+      className={`${jetbrainsMono.variable} ${inter.variable} h-full`}
     >
       <body className="flex min-h-full flex-col bg-base font-body text-text antialiased">
         <header className="sticky top-0 z-50 border-b border-panel-border/60 bg-base/80 backdrop-blur">
