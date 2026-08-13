@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
@@ -8,8 +8,8 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -32,18 +32,24 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${inter.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col">
-        <header className="border-b border-black/8 dark:border-white/[.145]">
-          <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-            <Link href="/" className="font-semibold">
-              Portfolio
+      <body className="flex min-h-full flex-col bg-base font-body text-text antialiased">
+        <header className="sticky top-0 z-50 border-b border-panel-border/60 bg-base/80 backdrop-blur">
+          <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+            <Link
+              href="/"
+              className="font-display text-sm font-medium tracking-[0.2em] text-text uppercase"
+            >
+              Raghu Akula
             </Link>
-            <ul className="flex gap-6 text-sm">
+            <ul className="flex gap-8 text-sm text-text-muted">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="hover:underline">
+                  <Link
+                    href={link.href}
+                    className="transition-colors hover:text-text"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -52,8 +58,8 @@ export default function RootLayout({
           </nav>
         </header>
         <main className="flex flex-1 flex-col">{children}</main>
-        <footer className="border-t border-black/8 px-6 py-4 text-center text-sm text-zinc-500 dark:border-white/[.145]">
-          © {new Date().getFullYear()}
+        <footer className="border-t border-panel-border/60 px-6 py-8 text-center text-xs text-text-muted">
+          © {new Date().getFullYear()} Raghu Akula
         </footer>
       </body>
     </html>
